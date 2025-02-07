@@ -11,7 +11,7 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title'       => ['required', 'string', 'max:255'],
+            'uid'         => ['required', 'string', 'unique:your_table_name,uid'],
+            'description' => ['nullable', 'string'],
+            'status'      => ['required', 'in:active,inactive,pending'], // Example status options
+            'author_id'   => ['required', 'exists:users,id'], // Ensure author exists
         ];
     }
 }
