@@ -22,4 +22,29 @@ class UrlShortnerService{
     {
         return substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 6);
     }
+    public function update($data, $id){
+        $urlShortner = UrlShortner::findOrFail($id);
+        $short_code = $this->generateStringUrl();
+        while (UrlShortner::where('short_url',$short_code)->exists()) {
+         $short_code = $this->generateStringUrl();
+        }
+        return $urlShortner->update([
+            'url_main_link'=> $data['url_main_link'],
+            'short_url'=> $short_code
+        ]);
+    }
+    public function shortUrlshow($data){
+       return UrlShortner::where('short_url', $data)->first();
+        
+    }
+    public function show($id){
+        return UrlShortner::findOrFail($id);
+    }
+    public function destroy($id){
+        $data = UrlShortner::findOrFail($id);
+        if($data){
+           return $data->delete();
+        }
+        return null;
+    }
 }

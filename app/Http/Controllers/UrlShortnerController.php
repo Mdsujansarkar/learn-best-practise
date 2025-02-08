@@ -66,9 +66,41 @@ class UrlShortnerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UrlShortner $urlShortner)
+    public function show(Request $request)
     {
-        //
+        try {
+            $data= $this->urlShortner->show($request->id);
+            return response()->json([
+                'success' => true,
+                'code' => 201,
+                'message' => 'Short url Create.',
+                'data' => $data
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch posts.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+    public function shortUrlshow($shortUrl)
+    {
+        try {
+            $data= $this->urlShortner->shortUrlshow($shortUrl);
+            return response()->json([
+                'success' => true,
+                'code' => 201,
+                'message' => 'Short url Create.',
+                'data' => $data
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch posts.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -82,16 +114,44 @@ class UrlShortnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UrlShortner $urlShortner)
+    public function update(UrlShortnerRequest $request)
     {
-        //
+        try {
+            $data= $this->urlShortner->update($request->validated(), $request->id);
+            return response()->json([
+                'success' => true,
+                'code' => 201,
+                'message' => 'Short url Updated.',
+                'data' => $data
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to Updated.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UrlShortner $urlShortner)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $data= $this->urlShortner->destroy($request->id);
+            return response()->json([
+                'success' => true,
+                'code' => 201,
+                'message' => 'Short url Create.',
+                'data' => $data
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch posts.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 }
